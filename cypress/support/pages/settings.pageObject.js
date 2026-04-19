@@ -24,7 +24,7 @@ class SettingsPageObject extends PageObject {
   }
 
   get logoutBtn() {
-    return cy.contains('Or click here to logout.');
+    return cy.getByDataCy('logout-btn');
   }
 
   typeUsername(username) {
