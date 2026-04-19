@@ -1,29 +1,29 @@
-let isProduction
+let isProduction;
 if (process.env.NEXT_PUBLIC_NODE_ENV === undefined) {
-  isProduction = process.env.NODE_ENV === 'production'
+  isProduction = process.env.NODE_ENV === 'production';
 } else {
-  isProduction = process.env.NEXT_PUBLIC_NODE_ENV === 'production'
+  isProduction = process.env.NEXT_PUBLIC_NODE_ENV === 'production';
 }
 
-let demoMaxObjs
+let demoMaxObjs;
 if (isProduction) {
-  demoMaxObjs = 1000
+  demoMaxObjs = 1000;
 } else {
-  demoMaxObjs = 10
+  demoMaxObjs = 10;
 }
 
-let databaseUrl
+let databaseUrl;
 if (process.env.NODE_ENV === 'test') {
-  databaseUrl = process.env.DATABASE_URL_TEST
+  databaseUrl = process.env.DATABASE_URL_TEST;
 } else {
-  databaseUrl = process.env.DATABASE_URL
+  databaseUrl = process.env.DATABASE_URL;
 }
 
 module.exports = {
   apiPath: '/api',
   appName: 'Conduit',
   articleLimit: 10,
-  defaultProfileImage: `https://static.productionready.io/images/smiley-cyrus.jpg`,
+  defaultProfileImage: 'data:image/gif;base64,R0lGODlhAQABAAAAACw=',
   demoMaxObjs: demoMaxObjs,
   // If Sequelize were better, we would be able to do much more in individual complex queries.
   // But as things stand, we just have to bring data into memory and do secondary requests.
@@ -75,4 +75,4 @@ module.exports = {
     },
     logging: true,
   },
-}
+};
