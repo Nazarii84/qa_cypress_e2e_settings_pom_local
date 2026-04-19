@@ -24,14 +24,14 @@ describe('Settings page', () => {
     });
 
     cy.task('generateUser').then((user) => {
-      cy.register(user.email, user.username, user.password);
+      return cy.register(user.email, user.username, user.password).then(() => {
+        signInPage.visit();
+        signInPage.typeEmail(user.email);
+        signInPage.typePassword(user.password);
+        signInPage.clickSignInBtn();
 
-      signInPage.visit();
-      signInPage.typeEmail(user.email);
-      signInPage.typePassword(user.password);
-      signInPage.clickSignInBtn();
-
-      cy.getByDataCy('settings-link').click();
+        cy.getByDataCy('settings-link').click();
+      });
     });
   });
 
@@ -40,18 +40,16 @@ describe('Settings page', () => {
       settingsPage.typeUsername(updatedUser.username);
       settingsPage.clickUpdateSettingsBtn();
 
-      homePage.assertHeaderContainUsername(updatedUser.username.toLowerCase());
+      homePage.assertHeaderContainUsername(updatedUser.username);
     });
   });
 
   it('should provide an ability to update bio', () => {
     cy.task('generateUser').then((updatedUser) => {
-      const newBio = `Bio for ${updatedUser.username}`;
-
-      settingsPage.typeBio(newBio);
+      settingsPage.typeBio(updatedUser.bio);
       settingsPage.clickUpdateSettingsBtn();
 
-      settingsPage.bioField.should('have.value', newBio);
+      settingsPage.bioField.should('have.value', updatedUser.bio);
     });
   });
 
@@ -69,13 +67,13 @@ describe('Settings page', () => {
       settingsPage.typePassword(updatedUser.password);
       settingsPage.clickUpdateSettingsBtn();
 
-      cy.url().should('include', '/profile/');
+      cy.location('pathname').should('include', '/profile/');
     });
   });
 
   it('should provide an ability to log out', () => {
-  settingsPage.clickLogoutBtn();
+    settingsPage.clickLogoutBtn();
 
-  cy.url().should('eq', 'http://localhost:3000/');
+    cy.location('pathname').should('eq', '/');
   });
 });
